@@ -11,40 +11,32 @@ contract ChallengeTwoTest is Test {
     address user = address(0x123);
 
     function setUp() public {
-        // Deploy the contracts
         challengeTwo = new ChallengeTwo();
         exploit = new Exploit();
-
-        // Label the addresses for better debugging
         vm.label(user, "User");
         vm.label(address(challengeTwo), "ChallengeTwo");
         vm.label(address(exploit), "Exploit");
     }
 
     function testPassKey() public {
-        // Test passing the correct key
         vm.prank(user);
         exploit.passkey(address(challengeTwo));
 
     }
 
     function testGetEnoughPoints() public {
-        // Pass the key first
         vm.prank(user);
         exploit.passkey(address(challengeTwo));
 
         // Accumulate points
         vm.prank(user);
         exploit.point(address(challengeTwo));
-
-        // Check if the user's point increased and Name is correctly set
         assertEq(challengeTwo.userPoint(user), 1);
-        assertEq(challengeTwo.Names(user), "Pelz");
+        assertEq(challengeTwo.Names(user), "Sola");
 
-        // Revert the point accumulation because points != 4
         vm.expectRevert("invalid point Accumulated");
         vm.prank(user);
-        challengeTwo.getENoughPoint("Pelz");
+        challengeTwo.getENoughPoint("Sola");
     }
 
     function testAddYourName() public {
@@ -79,7 +71,7 @@ contract ChallengeTwoTest is Test {
 
         // Retrieve all winners
         string[] memory winners = challengeTwo.getAllwiners();
-        assertEq(winners[0], "Pelz");
+        assertEq(winners[0], "Sola");
     }
 
     function testExploit() public {
