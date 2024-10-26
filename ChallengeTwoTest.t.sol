@@ -26,8 +26,6 @@ contract ChallengeTwoTest is Test {
         vm.prank(user);
         exploit.passkey(address(challengeTwo));
 
-        // No need for assertion because the console logs the result of the correct key
-        // Alternatively, you can check if hasSolved1 is true
     }
 
     function testGetEnoughPoints() public {
@@ -53,8 +51,6 @@ contract ChallengeTwoTest is Test {
         // Complete the first two steps: Pass key and accumulate enough points
         vm.prank(user);
         exploit.passkey(address(challengeTwo));
-
-        // Accumulate enough points (call multiple times due to receiver fallback function)
         for (uint i = 0; i < 4; i++) {
             vm.prank(user);
             exploit.point(address(challengeTwo));
@@ -96,8 +92,6 @@ contract ChallengeTwoTest is Test {
             (bool success, ) = address(challengeTwo).call{value: 1 ether}("");
             require(success, "Fallback failed");
         }
-
-        // Check if points were accumulated correctly through fallback
         assertEq(challengeTwo.userPoint(user), 4);
 
         // Ensure the user can complete the challenge
